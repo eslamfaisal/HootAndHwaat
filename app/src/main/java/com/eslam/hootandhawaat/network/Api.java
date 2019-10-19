@@ -1,6 +1,7 @@
 package com.eslam.hootandhawaat.network;
 
 import com.eslam.hootandhawaat.models.CityResponse;
+import com.eslam.hootandhawaat.models.FishesTypeResponse;
 
 import java.util.List;
 
@@ -12,5 +13,7 @@ public interface Api {
     @GET("api/cities/all")
     Call<List<CityResponse>> getCities();
 
+    @GET("api/get/types")
+    Call<FishesTypeResponse> getFishesType();
 
 }
