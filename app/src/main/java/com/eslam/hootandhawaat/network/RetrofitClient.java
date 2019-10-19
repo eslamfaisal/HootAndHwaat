@@ -3,16 +3,15 @@ package com.eslam.hootandhawaat.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Locale;
+import java.io.IOException;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class RetrofitClient {
 
@@ -29,13 +28,16 @@ public class RetrofitClient {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.addInterceptor(logging);
 
-        Interceptor authorization = chain -> {
-            Request newRequest = chain.request().newBuilder()
-                    .addHeader("Accept", "application/json")
-                    .build();
+        Interceptor authorization = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
 
-            return chain.proceed(newRequest);
+                Request newRequest = chain.request().newBuilder()
+                        .addHeader("Accept", "application/json")
+                        .build();
 
+                return chain.proceed(newRequest);
+            }
         };
 
         httpClientBuilder.addInterceptor(authorization);
