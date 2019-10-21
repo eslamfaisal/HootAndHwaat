@@ -1,75 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:drawme="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.FishesActivity">
 
-    <com.john.waveview.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/wave_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
-        android:visibility="visible"
-        wave:above_wave_color="@color/colorPrimaryDark"
-        wave:blow_wave_color="@color/colorAccent"
-        wave:progress="40"
-        wave:wave_height="large"
-        wave:wave_hz="normal"
-        wave:wave_length="large" />
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/empty_orders"
-        android:text="@string/no_orders"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.cardview.widget.CardView
-        android:visibility="gone"
-        android:id="@+id/fishes_names"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appbar">
-
-        <Spinner
-            android:id="@+id/fish_type_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="8dp">
-
-        </Spinner>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/fishes_types_view"
+        app:cardElevation="12dp"
+        android:padding="4dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fishes_names">
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fishes_types_recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/typesProgress"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fishes_types_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fishes_recyclerview"
@@ -81,4 +43,27 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <com.john.waveview.WaveView xmlns:wave="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/wave_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:visibility="gone"
+        wave:above_wave_color="@color/colorPrimaryDark"
+        wave:blow_wave_color="@color/colorAccent"
+        wave:progress="40"
+        wave:wave_height="large"
+        wave:wave_hz="normal"
+        wave:wave_length="large" />
+
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/empty_orders"
+        android:text="@string/no_orders"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

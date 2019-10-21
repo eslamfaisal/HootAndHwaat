@@ -57,15 +57,15 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/fishes_ads"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp">
 
                 <ImageView
-                    android:id="@+id/fishes"
                     android:layout_width="wrap_content"
                     android:layout_height="150dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:src="@drawable/fish" />
 
                 <TextView
@@ -80,11 +80,11 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/trips_ads"
                 android:layout_width="wrap_content"
                 android:layout_height="160dp">
 
                 <ImageView
-                    android:id="@+id/trips"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:src="@drawable/boat" />

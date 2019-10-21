@@ -48,7 +48,7 @@ public class FishesTypeResponse implements Serializable {
         this.types = types;
     }
 
-    public class Type implements Serializable {
+    public static class Type implements Serializable {
 
         @SerializedName("f_t_id")
         @Expose
