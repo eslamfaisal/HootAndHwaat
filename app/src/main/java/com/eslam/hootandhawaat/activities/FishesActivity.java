@@ -159,7 +159,7 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
                             fishesAdsAdapter.addAll(response.body().getData());
                         }
 
-                        if (currentPage <= TOTAL_PAGES) fishesAdsAdapter.addLoadingFooter();
+                        if (currentPage != TOTAL_PAGES) fishesAdsAdapter.addLoadingFooter();
                         else isLastPage = true;
 
                     }
@@ -177,7 +177,7 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
         currentPage = 1;
         isLoading = false;
         isLastPage = false;
-        
+
         currentFishType = fishType;
         RetrofitClient.getInstance().getApi()
                 .getFisheAds(fishType.getFTId(), CITY_ID, String.valueOf(currentPage))
