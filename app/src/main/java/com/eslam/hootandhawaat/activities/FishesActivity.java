@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.eslam.hootandhawaat.R;
 import com.eslam.hootandhawaat.adapter.FishesAdsAdapter;
 import com.eslam.hootandhawaat.adapter.FishesTypesAdapter;
+import com.eslam.hootandhawaat.models.FishesAdsResponse;
 import com.eslam.hootandhawaat.models.FishesTypeResponse;
 import com.eslam.hootandhawaat.network.RetrofitClient;
 import com.eslam.hootandhawaat.utility.PaginationScrollListener;
@@ -30,14 +31,19 @@ import retrofit2.Response;
 public class FishesActivity extends AppCompatActivity implements FishesTypesAdapter.FisheTypeListener {
 
     private final String TAG = "EslamFaisal";
+
     @BindView(R.id.fishes_recyclerview)
     RecyclerView fishesRecyclerView;
+
     @BindView(R.id.fishes_types_recycler_view)
     RecyclerView fishesTypesRecyclerView;
+
     @BindView(R.id.wave_view)
     WaveView progress;
+
     @BindView(R.id.empty_orders)
     TextView noOrders;
+
     @BindView(R.id.typesProgress)
     ProgressBar typesProgress;
 
@@ -53,6 +59,7 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
     private int currentPage = PAGE_START;
 
     private String CITY_ID;
+    private FishesTypeResponse.Type currentFishType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,26 +79,30 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
 
     private void getFishesType() {
         typesProgress.setVisibility(View.VISIBLE);
-        RetrofitClient.getInstance().getApi().getFishesType().enqueue(new Callback<FishesTypeResponse>() {
-            @Override
-            public void onResponse(Call<FishesTypeResponse> call, Response<FishesTypeResponse> response) {
-                typesProgress.setVisibility(View.GONE);
-                if (response.code() == 200) {
-                    Log.d(TAG, "onResponse: " + response.body().toString());
-                    fishesTypesAdapter.addAll(response.body().getTypes());
-                } else if (response.code() == 404) {
-                    Log.d(TAG, "onResponse: error" + response.message());
-                }
+        RetrofitClient.getInstance()
+                .getApi()
+                .getFishesType()
+                .enqueue(new Callback<FishesTypeResponse>() {
+                    @Override
+                    public void onResponse(Call<FishesTypeResponse> call, Response<FishesTypeResponse> response) {
+                        typesProgress.setVisibility(View.GONE);
+                        if (response.code() == 200) {
+                            Log.d(TAG, "onResponse: " + response.body().toString());
+                            fishesTypesAdapter.addAll(response.body().getTypes());
+                            searchForType(response.body().getTypes().get(0));
+                        } else if (response.code() == 404) {
+                            Log.d(TAG, "onResponse: error" + response.message());
+                        }
 
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<FishesTypeResponse> call, Throwable t) {
-                typesProgress.setVisibility(View.GONE);
-                Log.e(TAG, "onFailure: ", t);
+                    @Override
+                    public void onFailure(Call<FishesTypeResponse> call, Throwable t) {
+                        typesProgress.setVisibility(View.GONE);
+                        Log.e(TAG, "onFailure: ", t);
 
-            }
-        });
+                    }
+                });
     }
 
     private void initRecyclerView() {
@@ -111,7 +122,7 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
                 isLoading = true;
                 currentPage += 1;
 
-
+                loadNextPage();
             }
 
             @Override
@@ -131,8 +142,65 @@ public class FishesActivity extends AppCompatActivity implements FishesTypesAdap
         });
     }
 
+    private void loadNextPage() {
+
+        RetrofitClient.getInstance().getApi()
+                .getFisheAds(currentFishType.getFTId(), CITY_ID, String.valueOf(currentPage))
+                .enqueue(new Callback<FishesAdsResponse>() {
+                    @Override
+                    public void onResponse(Call<FishesAdsResponse> call, Response<FishesAdsResponse> response) {
+                        fishesAdsAdapter.removeLoadingFooter();
+                        isLoading = false;
+
+                        if (response.code() == 200) {
+                            TOTAL_PAGES = response.body().getLastPage();
+                            Log.d(TAG, "onResponse: " + response.body().getSuccess());
+                            Log.d(TAG, "onResponse: " + response.body().toString());
+                            fishesAdsAdapter.addAll(response.body().getData());
+                        }
+
+                        if (currentPage <= TOTAL_PAGES) fishesAdsAdapter.addLoadingFooter();
+                        else isLastPage = true;
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<FishesAdsResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+
     @Override
     public void searchForType(FishesTypeResponse.Type fishType) {
+        fishesAdsAdapter.clear();
+        currentPage = 1;
+        isLoading = false;
+        isLastPage = false;
+        
+        currentFishType = fishType;
+        RetrofitClient.getInstance().getApi()
+                .getFisheAds(fishType.getFTId(), CITY_ID, String.valueOf(currentPage))
+                .enqueue(new Callback<FishesAdsResponse>() {
+                    @Override
+                    public void onResponse(Call<FishesAdsResponse> call, Response<FishesAdsResponse> response) {
 
+                        if (response.code() == 200) {
+                            TOTAL_PAGES = response.body().getLastPage();
+                            Log.d(TAG, "onResponse: " + response.body().getSuccess());
+                            Log.d(TAG, "onResponse: " + response.body().toString());
+                            fishesAdsAdapter.addAll(response.body().getData());
+                        }
+
+                        if (currentPage != TOTAL_PAGES) fishesAdsAdapter.addLoadingFooter();
+                        else isLastPage = true;
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<FishesAdsResponse> call, Throwable t) {
+
+                    }
+                });
     }
 }

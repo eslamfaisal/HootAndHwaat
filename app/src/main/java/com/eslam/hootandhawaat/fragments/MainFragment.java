@@ -76,6 +76,7 @@ public class MainFragment extends Fragment {
                 loading.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse: " + response.body().toString());
                 initCitiesSpinner(response.body());
+
             }
 
             @Override
@@ -95,7 +96,8 @@ public class MainFragment extends Fragment {
         citiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                CITY_ID = cityResponseList.get(i).getCName();
+                CITY_ID = cityResponseList.get(i).getCId();
+                Log.d(TAG, "onItemSelected: "+CITY_ID);
             }
 
             @Override

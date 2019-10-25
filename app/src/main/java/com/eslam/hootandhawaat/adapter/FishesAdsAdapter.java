@@ -22,12 +22,12 @@ public class FishesAdsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     // View Types
     private static final int ITEM = 0;
     private static final int LOADING = 1;
-    List<FishesAdsResponse> fishList;
+    List<FishesAdsResponse.Datum> fishList;
     Activity context;
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
 
-    public FishesAdsAdapter(List<FishesAdsResponse> fishList, Activity context) {
+    public FishesAdsAdapter(List<FishesAdsResponse.Datum> fishList, Activity context) {
         this.fishList = fishList;
         this.context = context;
     }
@@ -58,40 +58,40 @@ public class FishesAdsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int position) {
-        final FishesAdsResponse fish = fishList.get(position);
+        final FishesAdsResponse.Datum fish = fishList.get(position);
 
         switch (getItemViewType(position)) {
 
             case ITEM:
                 final FishViewHolder holder = (FishViewHolder) viewHolder;
 
-//                holder.price.setText(fish.getF_price() + context.getString(R.string.SR));
-//                holder.img.setImageURI(fish.getF_image());
-//                holder.name.setText(fish.getF_name());
-//
-//                if (Integer.parseInt(fish.getF_delevary()) == 1) {
-//                    holder.delivery.setText(context.getString(R.string.available_delivery));
-//
-//                } else {
-//                    holder.delivery.setVisibility(View.GONE);
-//                }
-//
-//                if (Integer.valueOf(fish.getF_cooking()) == 1) {
-//                    holder.readyToEat.setText(context.getString(R.string.available_cooking));
-//
-//                } else {
-//                    holder.readyToEat.setVisibility(View.GONE);
-//                }
-//
-//                holder.quantity.setText(fish.getF_quantity() + " "+context.getString(R.string.km));
-//                holder.mainView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        holder.detailsView.setVisibility(View.VISIBLE);
-//                    }
-//                });
-//
-//
+                holder.price.setText(fish.getFPrice() + context.getString(R.string.SR));
+                holder.img.setImageURI(fish.getFImage());
+                holder.name.setText(fish.getCUsername());
+
+                if (Integer.parseInt(fish.getFDelevary()) == 1) {
+                    holder.delivery.setText(context.getString(R.string.available_delivery));
+
+                } else {
+                    holder.delivery.setVisibility(View.GONE);
+                }
+
+                if (Integer.valueOf(fish.getFCooking()) == 1) {
+                    holder.readyToEat.setText(context.getString(R.string.available_cooking));
+
+                } else {
+                    holder.readyToEat.setVisibility(View.GONE);
+                }
+
+                holder.quantity.setText(fish.getFQuantity() + " "+context.getString(R.string.km));
+                holder.mainView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.detailsView.setVisibility(View.VISIBLE);
+                    }
+                });
+
+
 
                 break;
 
@@ -123,14 +123,14 @@ public class FishesAdsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        fishList.add(new FishesAdsResponse());
+        fishList.add(new FishesAdsResponse.Datum());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = fishList.size() - 1;
-        FishesAdsResponse result = getItem(position);
+        FishesAdsResponse.Datum result = getItem(position);
 
         if (result != null) {
             fishList.remove(position);
@@ -138,11 +138,11 @@ public class FishesAdsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public FishesAdsResponse getItem(int position) {
+    public FishesAdsResponse.Datum getItem(int position) {
         return fishList.get(position);
     }
 
-    public void addAll(List<FishesAdsResponse> newfishList) {
+    public void addAll(List<FishesAdsResponse.Datum> newfishList) {
         fishList.addAll(newfishList);
         notifyDataSetChanged();
     }
