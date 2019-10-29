@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.eslam.hootandhawaat.R;
 import com.eslam.hootandhawaat.activities.FishesActivity;
+import com.eslam.hootandhawaat.activities.TripsActivity;
 import com.eslam.hootandhawaat.models.CityResponse;
 import com.eslam.hootandhawaat.network.RetrofitClient;
 import com.john.waveview.WaveView;
@@ -116,6 +117,8 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.trips_ads)
     void tripsAds() {
-
+        Intent intent = new Intent(getActivity(), TripsActivity.class);
+        intent.putExtra("city_id",CITY_ID);
+        getActivity().startActivity(intent);
     }
 }

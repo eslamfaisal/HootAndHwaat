@@ -3,6 +3,7 @@ package com.eslam.hootandhawaat.network;
 import com.eslam.hootandhawaat.models.CityResponse;
 import com.eslam.hootandhawaat.models.FishesAdsResponse;
 import com.eslam.hootandhawaat.models.FishesTypeResponse;
+import com.eslam.hootandhawaat.models.FishesTripsResponse;
 
 import java.util.List;
 
@@ -23,6 +24,14 @@ public interface Api {
             @Path("type_id") String type_id,
             @Path("city_id") String city_id,
             @Path("page") String page
+    );
+
+    @GET("api/get/trips/for/marasi_id={marasi_id}&beach={beach}&city_id={city_id}&page={page}")
+    Call<FishesTripsResponse> getTrips(
+            @Path("marasi_id") String marasi_id,
+            @Path("beach") String beach,
+            @Path("city_id") String city_id,
+            @Path("page") int page
     );
 
 }

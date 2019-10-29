@@ -12,11 +12,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".activities.FishesActivity"/>
+        <activity android:name=".activities.TripsActivity"
+            android:theme="@style/NoActionBar"/>
+        <activity android:name=".activities.FishesActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/NoActionBar">
